@@ -15,21 +15,15 @@
 // ------------------------------------------------------------
 const SPRITE = {
   frameWidth:  75,
-  frameHeight: 150,
+  frameHeight: 100,
   numFrames:   4,
-  animSpeed:   20,
+  animSpeed:   12,
   scale:       0.5,
   rows: {
     down:  0,
-    up:    1,
-    right: 2,
-    left:  3,
-  },
-  offsets: {
-    down:  { x: 0, y: 0  },
-    up:    { x: 0, y: 0  },
-    right: { x: 0, y: 10 },
-    left:  { x: 0, y: 20 },
+    right: 1,
+    left:  2,
+    up:    3,
   },
 };
 
@@ -38,11 +32,11 @@ const SPRITE = {
 // Same structure as Example 2. See that file for full notes.
 // ------------------------------------------------------------
 const COIN = {
-  frameWidth:  32,
-  frameHeight: 32,
-  numFrames:   8,
+  frameWidth:  200,
+  frameHeight: 200,
+  numFrames:   25,
   animSpeed:   6,
-  scale:       1.5,
+  scale:       0.25,
 };
 
 // ------------------------------------------------------------
@@ -75,11 +69,11 @@ const MAZE = [
 
 // Colours for each tile type — stored as RGB arrays
 const TILE_COLORS = {
-  0: [40,  40,  50 ], // floor — dark grey
-  1: [80,  60,  100], // wall  — purple-grey
-  2: [40,  40,  50 ], // start — same as floor
-  3: [40,  40,  50 ], // coin  — same as floor (coin drawn on top)
-  4: [60,  100, 80 ], // exit  — green tint when locked
+  0: [20,  24,  33 ], // floor — dark cosmic slate
+  1: [239, 68,  68 ], // wall  — vibrant warning red
+  2: [20,  24,  33 ], // start — same as floor
+  3: [20,  24,  33 ], // coin  — same as floor (coin drawn on top)
+  4: [30,  41,  59 ], // exit  — locked dead-grey tint
 };
 
 // ------------------------------------------------------------
@@ -128,8 +122,8 @@ let coinSheet;
 // are ready before the sketch tries to use them.
 // ============================================================
 function preload() {
-  characterSheet = loadImage("assets/images/walking.png");
-  coinSheet      = loadImage("assets/images/coin_gold.png");
+  characterSheet = loadImage("assets/images/walking1.png");
+  coinSheet      = loadImage("assets/images/coin_gold1.png");
 }
 
 // ============================================================
@@ -177,7 +171,7 @@ function setup() {
 // appears on top of it.
 // ============================================================
 function draw() {
-  background(20);
+  background(11, 15, 23);
 
   drawMaze();
   updateCoins();
@@ -214,9 +208,9 @@ function drawMaze() {
       // Exit tile changes colour when all coins are collected
       if (tile === 4) {
         if (coinsCollected === coins.length) {
-          fill(30, 200, 120); // bright green — exit is open
+          fill(250, 204, 21); // radiant neon orange-yellow trigger exit open
         } else {
-          fill(60, 100, 80);  // dim green — exit is locked
+          fill(30, 41, 59);  // dead slate gray exit locked
         }
       } else {
         let c = TILE_COLORS[tile];
@@ -257,13 +251,17 @@ function drawCoins() {
 
     let coin = coins[i];
 
-    // Source x position on the sprite sheet
-    // Coins have only one row so sy is always 0
-    let sx = coin.frame * COIN.frameWidth;
+    // Source x and y positions dynamically calculated for a 5-column layout matrix
+    let colIndex = coin.frame % 5;
+    let rowIndex = floor(coin.frame / 5);
+
+    let sx = colIndex * COIN.frameWidth;
+    let sy = rowIndex * COIN.frameHeight;
+    
     let dw = COIN.frameWidth  * COIN.scale;
     let dh = COIN.frameHeight * COIN.scale;
 
-    image(coinSheet, coin.x, coin.y, dw, dh, sx, 0, COIN.frameWidth, COIN.frameHeight);
+    image(coinSheet, coin.x, coin.y, dw, dh, sx, sy, COIN.frameWidth, COIN.frameHeight);
   }
 }
 
@@ -435,13 +433,12 @@ function animateSprite() {
 // index by frameHeight.
 // ------------------------------------------------------------
 function drawCharacter() {
-  // Get the correct row and offset for the current direction
-  let row    = SPRITE.rows[player.direction];
-  let offset = SPRITE.offsets[player.direction];
+  // Get the correct row index for the current direction
+  let row = SPRITE.rows[player.direction];
 
-  // Source position on the sprite sheet (with offset applied)
-  let sx = (player.currentFrame * SPRITE.frameWidth)  + offset.x;
-  let sy = (row                 * SPRITE.frameHeight) + offset.y;
+  // Source position on the sprite sheet
+  let sx = player.currentFrame * SPRITE.frameWidth;
+  let sy = row * SPRITE.frameHeight;
 
   // Draw size (original frame size multiplied by scale)
   let dw = SPRITE.frameWidth  * SPRITE.scale;
@@ -461,12 +458,12 @@ function drawHUD() {
   textSize(14);
   textAlign(LEFT);
   textFont("monospace");
-  text("Coins: " + coinsCollected + " / " + coins.length, 10, 20);
+  text("Explosions: " + coinsCollected + " / " + coins.length, 10, 20);
 
   // Show exit hint once all coins are collected
   if (coinsCollected === coins.length) {
-    fill(30, 200, 120);
-    text("Exit is open! Find the green tile.", 10, 40);
+    fill(250, 204, 21);
+    text("Exit is open! Find the yellow tile.", 10, 40);
   }
 }
 
@@ -488,5 +485,5 @@ function drawWinScreen() {
 
   textSize(16);
   fill(180);
-  text("All coins collected", width / 2, height / 2 + 20);
+  text("All explosions collected", width / 2, height / 2 + 20);
 }

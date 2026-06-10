@@ -15,17 +15,15 @@ Collect all 3 coins then reach the green exit tile to win.
 
 The console will show any errors in your sketch.
 
-e
-
 ## Assets
 
 | File | Source |
 |------|--------|
-| `assets/images/walking.png` | Slynyrd, Pixelblog 22: Top Down Character Sprites |
-| `assets/images/coin_gold.png` | Bellanger, C., Animated Coins — OpenGameArt.org |
+| `assets/images/walking1.png` [1] | OpenClipArt: Retro Character Sprite Sheet |
+| `assets/images/coin_gold1.png`[2] | Wallpaper Engine — Particle System Sprite Sheets |
 
 ## References
 
-Bellanger, C. n.d. *Animated Coins*. OpenGameArt.org. Retrieved May 1, 2026, from https://opengameart.org/content/animated-coins-0
+[2] Unknown Author. (n.d.). Particle System Sprite Sheets | Wallpaper Engine - Designer Documentation. docs.wallpaperengine.io. Retrieved from https://docs.wallpaperengine.io/en/scene/particles/tutorial/spritesheet.html
 
-Slynyrd. 2019. *Pixelblog 22: Top Down Character Sprites*. Slynyrd Blog. Retrieved May 1, 2026, from https://www.slynyrd.com/blog/2019/10/21/pixelblog-22-top-down-character-sprites
+[1] Unknown Author. (n.d.). Retro Character Sprite Sheet - Openclipart. openclipart.org. Retrieved from https://openclipart.org/detail/215080/retro-character-sprite-sheet
